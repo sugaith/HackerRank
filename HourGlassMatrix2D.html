@@ -1,0 +1,68 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+</head>
+
+<body style="background-color: black; color: white">
+
+<a href="https://www.hackerrank.com/challenges/2d-array/problem?isFullScreen=true&h_l=interview&playlist_slugs%5B%5D=interview-preparation-kit&playlist_slugs%5B%5D=arrays">
+  <h1>Hourglass Sum - hourglassSum()</h1>
+</a>
+
+<script>
+
+  function hourglassSum(arr) {
+    // Write your code here
+
+    function extractHourGlassSum(i, j, arr) {
+      const row1 = arr[i-1][j-1] + arr[i-1][j] + arr[i-1][j+1]
+      const row2 = arr[i][j]
+      const row3 = arr[i+1][j-1] + arr[i+1][j] + arr[i+1][j+1]
+      return [row1, row2, row3].reduce((acc, el) => acc + el)
+    }
+
+    const hourGlassesSums = []
+    for (let i=1; i < arr.length - 1; i++) {
+      for (let j=1; j < arr.length - 1; j++) {
+        const hgSum = extractHourGlassSum(i, j, arr)
+        hourGlassesSums.push(hgSum)
+      }
+    }
+
+    console.log(hourGlassesSums)
+
+    let biggest = hourGlassesSums[0]
+    for (const sum of hourGlassesSums) {
+      if (sum > biggest)
+        biggest = sum
+    }
+
+
+    return biggest
+  }
+
+</script>
+
+
+<!--RUN-->
+<script>
+
+
+
+$(document).ready(() => {
+  const s_arr =[
+    [1, 1, 1, 0, 0, 0],
+    [0, 1, 0, 0, 0, 0],
+    [1, 1, 1, 0, 0, 0],
+    [0, 0, 2, 4, 4, 0],
+    [0, 0, 0, 2, 0, 0],
+    [0, 0, 1, 2, 4, 0],
+  ];
+
+  console.log(hourglassSum?.(s_arr))
+
+});
+</script>
+</body>
+</html>

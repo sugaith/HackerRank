@@ -1,0 +1,47 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+</head>
+
+<body style="background-color: black; color: white">
+
+<a href="https://www.hackerrank.com/challenges/ctci-ransom-note/problem?isFullScreen=true&h_l=interview&playlist_slugs%5B%5D=interview-preparation-kit&playlist_slugs%5B%5D=dictionaries-hashmaps">
+  <h1>Ransom Note - checkMagazine()</h1>
+</a>
+
+<script>
+
+$(document).ready(() => {
+  function checkMagazine(magazine, note) {
+    let magazineHash = {};
+    let noteHash = {};
+    let result = "Yes";
+    for (let i = 0; i < magazine.length; i++) {
+      if (magazineHash[magazine[i]]) {
+        magazineHash[magazine[i]]++;
+      } else {
+        magazineHash[magazine[i]] = 1;
+      }
+    }
+    for (let i = 0; i < note.length; i++) {
+      if (noteHash[note[i]]) {
+        noteHash[note[i]]++;
+      } else {
+        noteHash[note[i]] = 1;
+      }
+    }
+    for (let key in noteHash) {
+      if (noteHash[key] > magazineHash[key]) {
+        result = "No";
+        break;
+      }
+    }
+    console.log(result);
+  }
+
+  checkMagazine()
+});
+</script>
+</body>
+</html>

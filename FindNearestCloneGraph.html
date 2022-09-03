@@ -1,0 +1,100 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+</head>
+
+<body style="background-color: black; color: white">
+
+<a href="https://www.hackerrank.com/challenges/find-the-nearest-clone/problem?isFullScreen=true&h_l=interview&playlist_slugs%5B%5D=interview-preparation-kit&playlist_slugs%5B%5D=graphs">
+  <h1>Find Nearest Clone on a Graph - findShortest()</h1>
+</a>
+
+<script>
+
+$(document).ready(() => {
+
+  function findShortest(graphNodes, graphFrom, graphTo, ids, val) {
+    const adjacencyList = {}
+    const colorIndexedList = {}
+    const numberOfEdges = graphNodes - 1
+
+    //build graph
+    for (let i=0; i<numberOfEdges; i++) {
+      let fromNode = graphFrom[i]
+      let toNode = graphTo[i]
+
+      if (adjacencyList[fromNode])
+        adjacencyList[fromNode].push(toNode)
+      else
+        adjacencyList[fromNode] = [toNode]
+
+      [fromNode, toNode] = [toNode, fromNode]
+
+      if (adjacencyList[fromNode])
+        adjacencyList[fromNode].push(toNode)
+      else
+        adjacencyList[fromNode] = [toNode]
+
+    }
+
+
+    let startNode = undefined;
+
+    //index colors and get a start node
+    for (let i=0; i<ids.length; i++) {
+      const nodeNumber = i + 1
+      colorIndexedList[nodeNumber] = ids[i]
+      if (!startNode && ids[i] === val) {
+        startNode = nodeNumber
+      }
+    }
+
+    console.log(adjacencyList)
+    console.log(colorIndexedList)
+    console.log(startNode)
+
+    // run graph build DFS
+    // const nodeQueueToVisit = adjacencyList[startNode] ? [...adjacencyList[startNode]] : []
+    const visitedNodes = {}
+    let levelCount = {}
+
+    const nodeQueueToVisit = [startNode]
+    visitedNodes[startNode] = true
+    levelCount[startNode] = 0
+
+    while (nodeQueueToVisit.length) {
+      console.log({
+        currentNode: nodeQueueToVisit[0],
+        currentLevel: levelCount,
+        queueState: [...nodeQueueToVisit]
+      })
+
+      const currentNode = nodeQueueToVisit.shift()
+
+      if (!adjacencyList[currentNode]) continue
+
+      for (const child of adjacencyList[currentNode]) {
+        if (visitedNodes[child]) continue
+
+        levelCount[child] = levelCount[currentNode] + 1
+
+        console.log('visiting child -<=> ' + child)
+
+        if (colorIndexedList[child] === val)
+          return levelCount[child]
+
+        visitedNodes[child] = true
+        nodeQueueToVisit.push(child)
+      }
+    }
+
+    return -1
+  }
+
+  console.log(findShortest(5, [1,1,2,3], [2,3,4,5], [1,2,3,3,2], 2))
+  // console.log(findShortest(4, [1,1,4], [2,3,2], [1,2,1,1], 1))
+});
+</script>
+</body>
+</html>

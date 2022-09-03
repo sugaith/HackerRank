@@ -1,0 +1,64 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+</head>
+
+<body style="background-color: black; color: white">
+
+<a href="https://www.hackerrank.com/challenges/balanced-brackets/problem?isFullScreen=true">
+  <h1>Balanced Brackets</h1>
+</a>
+<!--https://www.hackerrank.com/challenges/ctci-bfs-shortest-reach/problem?isFullScreen=true-->
+
+<script>
+  // Complete the isBalanced function below.
+  function isBalanced(s) {
+    console.log(s)
+    if (s.length % 2 !== 0) return 'NO';
+
+    const stack = [];
+    for (const char of s) {
+      if (char === '{' || char === '(' || char === '[') {
+        stack.push(char);
+      } else {
+        const stackLatest = stack.length - 1;
+
+        if (stack.length &&
+          (stack[stackLatest] === '{' && char === '}') ||
+          (stack[stackLatest] === '[' && char === ']') ||
+          (stack[stackLatest] === '(' && char === ')')
+        ) {
+          stack.pop();
+        } else {
+          return 'NO';
+        }
+      }
+    }
+    return stack.length ? 'NO' : 'YES';
+  }
+</script>
+
+
+<!--RUN-->
+<script>
+$(document).ready(() => {
+  const s_arr = [
+    `[([{{}}]{[[][][([[]]){[]}{}]]}[]{{}}{})[[]]]{{}}(()[[[[[(){}[]]({}{[]})[][[][]]]]{}]{[{}]{[{[][](()({{()}}){([]({({{[]}([([()]{()[[([({{{[]{(){}}[][]({{[([])()](())([{[]([()]{})}]){}([]){()}{}[]([[()]])}()})`,
+    `{(([])[])[]]}`,
+    `{(([])[])[]}[]`,
+  ];
+  // const s_arr = [
+  //   `{[()]}`,
+  //   `{[(])}`,
+  //   `{{[[(())]]}}`,
+  // ];
+
+
+  for (const s of s_arr) {
+    console.log(isBalanced(s))
+  }
+});
+</script>
+</body>
+</html>

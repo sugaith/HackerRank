@@ -1,0 +1,31 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+</head>
+
+<body style="background-color: black; color: white">
+
+<a href="https://www.hackerrank.com/challenges/ctci-array-left-rotation/problem?isFullScreen=true&h_l=interview&playlist_slugs%5B%5D=interview-preparation-kit&playlist_slugs%5B%5D=arrays">
+  <h1>RotLeftArrayCircular</h1>
+</a>
+
+<script>
+
+$(document).ready(() => {
+  function rotLeft(a, d) {
+    for (let i=0; i<d; i++) {
+      const leftOver = a.shift()
+      a.push(leftOver)
+    }
+
+    return a
+  }
+
+  console.log(
+    rotLeft([1, 2, 3, 4, 5], 4)
+  )
+});
+</script>
+</body>
+</html>
