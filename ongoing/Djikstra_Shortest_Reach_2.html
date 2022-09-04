@@ -1,106 +1,77 @@
 <!DOCTYPE HTML>
 <html lang="en">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+
 <body style="background-color: black; color: white">
 
 <a href="https://www.hackerrank.com/challenges/dijkstrashortreach/problem?isFullScreen=true">
-  <h1>Dijkstra: Shortest Reach</h1>
+  <h1>Dijkstra: Shortest Reach Weighted Graph</h1>
 </a>
 
 <script>
-  // Complete the shortestReach function below.
+$('document').ready(() => {
   function shortestReach(n, edges, s) {
-    function runGraph(Graph, startNode) {
-      const queue = [];
-      queue.push({
-        cost: 0, node: startNode,
-      });
-      let passedOverDistances = {};
-      passedOverDistances[startNode] = 0;
+    const buildGraph = (graphEdges) => {
+      const ajdList = {}
+      for(let edgesI = 0; edgesI < graphEdges.length; edgesI++) {
+        let [fromNode, toNode, weight] = graphEdges[edgesI]
 
-      while (queue.length) {
-        const currentNode = queue.shift();
-        const neighbours = Graph[currentNode.node];
-        console.log('currentNode')
-        console.log(currentNode)
-        if (!neighbours) continue;
+        const node = {weight, toNode: toNode}
+        if (ajdList[fromNode])
+          ajdList[fromNode].push(node)
+        else
+          ajdList[fromNode] = [node]
 
-        for (let i = 0; i < neighbours.length; i++) {
-          const neighbour = neighbours[i];
-          console.log('neighbour.................')
-          console.log(neighbour)
+        const node2 = {weight, toNode: fromNode}
+        if (ajdList[toNode])
+          ajdList[toNode].push(node2)
+        else
+          ajdList[toNode] = [node2]
+      }
 
-          // if (passedOverDistances[neighbour.node] !== undefined) continue
-          if (passedOverDistances[neighbour.node] === undefined)
-            passedOverDistances[neighbour.node] = Infinity;
+      return ajdList
+    }
 
-          console.log('passedOverDistances[neighbour.node]')
-          console.log(passedOverDistances[neighbour.node])
+    const getGraphDistances = (fromGraph, startingNode) => {
+      const visitList = [startingNode]
+      const sumOfDistances = {}
+      sumOfDistances[startingNode] = 0
 
-          if (passedOverDistances[neighbour.node] > passedOverDistances[currentNode.node] + neighbour.cost  ) {
-            console.log('yess')
-            passedOverDistances[neighbour.node] = passedOverDistances[currentNode.node] + neighbour.cost;
-            queue.push({
-              cost: passedOverDistances[neighbour.node],
-              node: neighbour.node
-            });
-            console.log('queu..... added........................e')
-            console.log([...queue])
-          }
+      while (visitList.length) {
+        const currentNode = visitList.pop()
+        console.log('currentNode', currentNode)
+
+        const children = Graph[currentNode]
+        if (!children) continue
+
+        for (const child of children) {
+          if (sumOfDistances[child.toNode]) continue
+          if (child.toNode === startingNode) continue
+
+          sumOfDistances[child.toNode] = sumOfDistances[currentNode] + child.weight
+          visitList.push(child.toNode)
         }
       }
-      return passedOverDistances;
+
+      return sumOfDistances
     }
 
-    const Graph = [];
-    for (const pair of edges) {
-      const fromNode = pair[0];
-      const toNode = pair[1];
-      const distance = pair[2];
+    const Graph = buildGraph(edges)
+    console.log('Graph', Graph)
 
-      const nodeToAdd_from = {
-        node: toNode,
-        cost: distance,
-      }
-      if (Graph[fromNode])
-        Graph[fromNode].push(nodeToAdd_from);
-      else
-        Graph[fromNode] = [nodeToAdd_from];
+    const distancesFromStaringNode = getGraphDistances(Graph, s)
+    console.log(distancesFromStaringNode)
 
-      const nodeToAdd_to = {
-        node: fromNode,
-        cost: distance,
-      }
-      if (Graph[toNode])
-        Graph[toNode].push(nodeToAdd_to);
-      else
-        Graph[toNode] = [nodeToAdd_to];
-    }
-
-    console.log('Graph')
-    console.log(Graph)
-
-    let distanceSum = runGraph(Graph, s);
-    delete distanceSum[s];
-    console.log(Object.values(distanceSum));
-    distanceSum = Object.values(distanceSum);
-    for (let iDis=1; iDis < n - 1 ; iDis++) {
-      if (iDis === s) continue;
-      if (!distanceSum[iDis]) distanceSum[iDis] = -1;
-    }
-    return Object.values(distanceSum);
   }
 
 
-</script>
-
-<!--RUN-->
-<script>
-$(document).ready(() => {
   const edges = [
     [ 1, 2, 24 ], [ 1, 4, 20 ], [ 3, 1, 3 ], [ 4, 3, 12 ]
   ];
-  console.log(shortestReach(4, edges, 1));
-  });
+
+
+  shortestReach(4, edges, 1)
+});
 </script>
 </body>
 </html>
