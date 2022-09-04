@@ -1,0 +1,111 @@
+<html lang="en">
+
+<body style="background-color: black; color: white">
+
+<a href="https://www.hackerrank.com/challenges/ctci-bfs-shortest-reach/problem?isFullScreen=true">
+  <h1>BFS: Shortest Reach in a Graph - processData()</h1>
+</a>
+
+<script>
+  function processData(input) {
+    function getDistanceOfNodes(Graph, startingNode, finalNode) {
+      const queueToVisit = [startingNode]
+      const distances = {}
+      distances[startingNode] = 0
+
+      while (queueToVisit.length) {
+        const currentNode = queueToVisit.shift()
+
+        console.log('currentNode', currentNode)
+
+        if (currentNode === finalNode)
+          return distances[finalNode]
+
+        const children = Graph[currentNode]
+        if (!children?.length) continue
+
+        for (let childI = 0; childI < children.length; childI++) {
+          const childNode = children[childI]
+          if (distances[childNode]) continue
+
+          distances[childNode] = distances[currentNode] + 6
+          queueToVisit.push(childNode)
+        }
+      }
+
+      return -1
+    }
+
+    const inputArr = input.split('\n')
+    const queriesCount = Number(inputArr.shift())
+    const allDistances = []
+
+    for (let queriesI = 0; queriesI < queriesCount; queriesI++) {
+
+      const Graph = []
+      let [nodeCount, edgesCount] = inputArr.shift().trim().split(' ')
+      nodeCount = Number(nodeCount)
+      edgesCount = Number(edgesCount)
+
+      for (let edgesI = 0; edgesI < edgesCount; edgesI++) {
+        let [fromNode, toNode] = inputArr.shift().trim().split(' ')
+        fromNode = Number(fromNode)
+        toNode = Number(toNode)
+
+        if (Graph[fromNode])
+          Graph[fromNode].push(toNode)
+        else
+          Graph[fromNode] = [toNode]
+
+        if (Graph[toNode])
+          Graph[toNode].push(fromNode)
+        else
+          Graph[toNode] = [fromNode]
+      }
+
+      const startingNode = Number(inputArr.shift())
+
+      const distances = []
+      for (let nodeIndex = 1; nodeIndex <= nodeCount; nodeIndex++) {
+        if (nodeIndex === startingNode) continue
+
+        distances.push(getDistanceOfNodes(Graph, startingNode, nodeIndex))
+        console.log('.......')
+      }
+
+      allDistances.push(distances.join(' '))
+    }
+
+    console.log(allDistances.join('\n'))
+  }
+
+
+  const input0 =
+    `2
+    4 2
+    1 2
+    1 3
+    1
+    3 1
+    2 3
+    2`
+  const input1 =
+    `1
+    6 4
+    1 2
+    2 3
+    3 4
+    1 5
+    1`;
+  const input2 =
+    `1
+    7 4
+    1 2
+    1 3
+    3 4
+    2 5
+    2`;
+  processData(input2)
+</script>
+</body>
+</html>
