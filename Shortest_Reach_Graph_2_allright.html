@@ -1,0 +1,87 @@
+<html lang="en">
+
+<body style="background-color: black; color: white">
+
+<a href="https://www.hackerrank.com/challenges/ctci-bfs-shortest-reach/problem?isFullScreen=true">
+  <h1>BFS: Shortest Reach in a Graph - processData()</h1>
+</a>
+
+<script>
+
+  function processData(input) {
+    function runGraph(Graph, startNode) {
+      const queue = [startNode];
+      const passedOverDistances = [];
+      passedOverDistances[startNode] = 0;
+
+      while (queue.length) {
+        const currentNode = queue.shift();
+        const neighbours = Graph[currentNode];
+        if (!neighbours) continue;
+
+        for (let i = 0; i < neighbours.length; i++) {
+          const neighbour = neighbours[i];
+          if (passedOverDistances[neighbour]) continue
+
+          passedOverDistances[neighbour] = passedOverDistances[currentNode] + 6;
+          queue.push(neighbour);
+        }
+      }
+      return passedOverDistances;
+    }
+
+    const inputLines = input.split('\n');
+    const queries = inputLines.shift();
+
+    let indexInput = 0;
+    for (let iQueries = 0; iQueries < queries; iQueries++) {
+      let nodeData = inputLines[indexInput++].split(' ');
+      const nodeQuantity = Number(nodeData[0]);
+      const pairQuantity = Number(nodeData[1]);
+
+      const Graph = [];
+      for (let iPairs = 0; iPairs < pairQuantity; iPairs++) {
+        const pair = inputLines[indexInput++].split(' ');
+        const fromNode = Number(pair[0]);
+        const toNode = Number(pair[1]);
+
+        if (Graph[fromNode])
+          Graph[fromNode].push(toNode);
+        else
+          Graph[fromNode] = [toNode];
+
+        if (Graph[toNode])
+          Graph[toNode].push(fromNode);
+        else
+          Graph[toNode] = [fromNode];
+      }
+      const startNode = Number(inputLines[indexInput++]);
+      const distanceSum = runGraph(Graph, startNode);
+
+      //format output
+      delete distanceSum[startNode];
+      for (let iNode = 1; iNode <= nodeQuantity; iNode++) {
+        if (iNode === startNode) continue;
+        if (!distanceSum[iNode]) distanceSum[iNode] = -1;
+      }
+      const output = distanceSum.join(' ').trim().replace(/  +/g, ' ')
+      console.log('RESULT')
+      console.log(output);
+    }
+  }
+
+
+  const input =
+          `1
+7 4
+1 2
+1 3
+3 4
+2 5
+2`;
+  processData(input);
+</script>
+
+
+</body>
+</html>

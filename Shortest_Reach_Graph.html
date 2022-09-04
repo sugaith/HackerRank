@@ -4,6 +4,9 @@
 
 <a href="https://www.hackerrank.com/challenges/ctci-bfs-shortest-reach/problem?isFullScreen=true">
   <h1>BFS: Shortest Reach in a Graph - processData()</h1>
+  <p>
+    .. the unshifting of the input data is not performatic, test5 not passing
+  </p>
 </a>
 
 <script>
@@ -16,7 +19,7 @@
       while (queueToVisit.length) {
         const currentNode = queueToVisit.shift()
 
-        console.log('currentNode', currentNode)
+        // console.log('currentNode', currentNode)
 
         if (currentNode === finalNode)
           return distances[finalNode]
@@ -38,7 +41,7 @@
 
     const inputArr = input.split('\n')
     const queriesCount = Number(inputArr.shift())
-    const allDistances = []
+    let allDistances = ''
 
     for (let queriesI = 0; queriesI < queriesCount; queriesI++) {
 
@@ -65,18 +68,18 @@
 
       const startingNode = Number(inputArr.shift())
 
-      const distances = []
+      let distances = ''
       for (let nodeIndex = 1; nodeIndex <= nodeCount; nodeIndex++) {
         if (nodeIndex === startingNode) continue
 
-        distances.push(getDistanceOfNodes(Graph, startingNode, nodeIndex))
-        console.log('.......')
+        distances += getDistanceOfNodes(Graph, startingNode, nodeIndex) + ' '
+        // console.log('.......')
       }
 
-      allDistances.push(distances.join(' '))
+      allDistances += distances.trim() + '\n'
     }
 
-    console.log(allDistances.join('\n'))
+    console.log(allDistances.trim())
   }
 
 
