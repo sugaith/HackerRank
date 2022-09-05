@@ -34,13 +34,11 @@ $('document').ready(() => {
 
     const getGraphDistances = (fromGraph, startingNode) => {
       const visitList = [startingNode]
-      const distances = {}
+      const distances = []
       distances[startingNode] = 0
 
       while (visitList.length) {
         const currentNode = visitList.shift()
-        console.log('currentNode', currentNode)
-
         const children = Graph[currentNode]
         if (!children) continue
 
@@ -63,6 +61,7 @@ $('document').ready(() => {
     const Graph = buildGraph(edges)
     const distancesFromStaringNode = getGraphDistances(Graph, s)
     delete distancesFromStaringNode[s]
+    distancesFromStaringNode.slice()
 
     for (let nodeNumber = 1; nodeNumber <= n; nodeNumber++) {
       if (nodeNumber === s) continue
@@ -71,8 +70,8 @@ $('document').ready(() => {
         distancesFromStaringNode[nodeNumber] = -1
     }
 
-    console.log(Object.values(distancesFromStaringNode))
-    return Object.values(distancesFromStaringNode)
+    // console.log(distancesFromStaringNode.filter(Number))
+    return distancesFromStaringNode.filter(Number)
   }
 
   const edges = [
