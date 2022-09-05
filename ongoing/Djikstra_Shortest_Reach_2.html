@@ -5,7 +5,7 @@
 <body style="background-color: black; color: white">
 
 <a href="https://www.hackerrank.com/challenges/dijkstrashortreach/problem?isFullScreen=true">
-  <h1>Dijkstra: Shortest Reach Weighted Graph</h1>
+  <h1>Dijkstra: Shortest Reach Weighted Graph -  time limit exceeded on test 7</h1>
 </a>
 
 <script>
@@ -34,41 +34,50 @@ $('document').ready(() => {
 
     const getGraphDistances = (fromGraph, startingNode) => {
       const visitList = [startingNode]
-      const sumOfDistances = {}
-      sumOfDistances[startingNode] = 0
+      const distances = {}
+      distances[startingNode] = 0
 
       while (visitList.length) {
-        const currentNode = visitList.pop()
+        const currentNode = visitList.shift()
         console.log('currentNode', currentNode)
 
         const children = Graph[currentNode]
         if (!children) continue
 
         for (const child of children) {
-          if (sumOfDistances[child.toNode]) continue
+          // if (distances[child.toNode]) continue
           if (child.toNode === startingNode) continue
-
-          sumOfDistances[child.toNode] = sumOfDistances[currentNode] + child.weight
-          visitList.push(child.toNode)
+          if (!distances[child.toNode]) {
+            distances[child.toNode] = Infinity
+          }
+          if (distances[currentNode] + child.weight < distances[child.toNode]) {
+            distances[child.toNode] = distances[currentNode] + child.weight
+            visitList.push(child.toNode)
+          }
         }
       }
 
-      return sumOfDistances
+      return distances
     }
 
     const Graph = buildGraph(edges)
-    console.log('Graph', Graph)
-
     const distancesFromStaringNode = getGraphDistances(Graph, s)
-    console.log(distancesFromStaringNode)
+    delete distancesFromStaringNode[s]
 
+    for (let nodeNumber = 1; nodeNumber <= n; nodeNumber++) {
+      if (nodeNumber === s) continue
+
+      if (!distancesFromStaringNode[nodeNumber])
+        distancesFromStaringNode[nodeNumber] = -1
+    }
+
+    console.log(Object.values(distancesFromStaringNode))
+    return Object.values(distancesFromStaringNode)
   }
-
 
   const edges = [
     [ 1, 2, 24 ], [ 1, 4, 20 ], [ 3, 1, 3 ], [ 4, 3, 12 ]
   ];
-
 
   shortestReach(4, edges, 1)
 });

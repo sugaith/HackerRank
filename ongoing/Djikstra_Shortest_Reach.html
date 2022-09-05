@@ -4,7 +4,7 @@
 <body style="background-color: black; color: white">
 
 <a href="https://www.hackerrank.com/challenges/dijkstrashortreach/problem?isFullScreen=true">
-  <h1>Dijkstra: Shortest Reach</h1>
+  <h1>Dijkstra: Shortest Reach various not passing!!!</h1>
 </a>
 
 <script>
@@ -27,19 +27,19 @@
 
         for (let i = 0; i < neighbours.length; i++) {
           const neighbour = neighbours[i];
-          console.log('neighbour.................')
-          console.log(neighbour)
 
-          // if (passedOverDistances[neighbour.node] !== undefined) continue
           if (passedOverDistances[neighbour.node] === undefined)
             passedOverDistances[neighbour.node] = Infinity;
 
           console.log('passedOverDistances[neighbour.node]')
           console.log(passedOverDistances[neighbour.node])
 
-          if (passedOverDistances[neighbour.node] > passedOverDistances[currentNode.node] + neighbour.cost  ) {
-            console.log('yess')
-            passedOverDistances[neighbour.node] = passedOverDistances[currentNode.node] + neighbour.cost;
+          if (passedOverDistances[neighbour.node] >
+            passedOverDistances[currentNode.node] + neighbour.cost  ) {
+
+            passedOverDistances[neighbour.node] =
+              passedOverDistances[currentNode.node] + neighbour.cost;
+
             queue.push({
               cost: passedOverDistances[neighbour.node],
               node: neighbour.node
