@@ -5,80 +5,75 @@
 <body style="background-color: black; color: white">
 
 <a href="https://www.hackerrank.com/challenges/dijkstrashortreach/problem?isFullScreen=true">
-  <h1>Dijkstra: Shortest Reach Weighted Graph -  time limit exceeded on test 7</h1>
+  <h1>Dijkstra: Shortest Reach Weighted Graph 3rd try - using new Set()</h1>
 </a>
 
 <script>
 $('document').ready(() => {
   function shortestReach(n, edges, s) {
-    const buildGraph = (graphEdges) => {
-      const ajdList = {}
-      for(let edgesI = 0; edgesI < graphEdges.length; edgesI++) {
-        let [fromNode, toNode, weight] = graphEdges[edgesI]
+    const buildGraph = _edges => {
+      const newGraph = new Map()
 
-        const node = {weight, toNode: toNode}
-        if (ajdList[fromNode])
-          ajdList[fromNode].push(node)
-        else
-          ajdList[fromNode] = [node]
-
-        const node2 = {weight, toNode: fromNode}
-        if (ajdList[toNode])
-          ajdList[toNode].push(node2)
-        else
-          ajdList[toNode] = [node2]
+      for (const edge of _edges) {
+        const [from, to, weight] = edge
+        const fromToNode = { to, weight }
+        const toFromNode = { to: from, weight }
+        newGraph.has(from)
+          ? newGraph.get(from).push(fromToNode) : newGraph.set(from, [fromToNode])
+        newGraph.has(to)
+          ? newGraph.get(to).push(toFromNode) : newGraph.set(to, [toFromNode])
       }
 
-      return ajdList
+      return newGraph
     }
 
-    const getGraphDistances = (fromGraph, startingNode) => {
-      const visitList = [startingNode]
-      const distances = []
-      distances[startingNode] = 0
+    const getDistancesFromGraph = (_Graph = new Map(), startNode) => {
+      const distancesSet = new Map()
+      distancesSet.set(startNode, 0)
+      const visitList = [startNode]
 
       while (visitList.length) {
-        const currentNode = visitList.shift()
-        const children = Graph[currentNode]
-        if (!children) continue
+        const currentNodeNum = visitList.pop()
+        for (const childNode of _Graph.get(currentNodeNum)) {
+          if (childNode.to === startNode) continue
 
-        for (const child of children) {
-          // if (distances[child.toNode]) continue
-          if (child.toNode === startingNode) continue
-          if (!distances[child.toNode]) {
-            distances[child.toNode] = Infinity
-          }
-          if (distances[currentNode] + child.weight < distances[child.toNode]) {
-            distances[child.toNode] = distances[currentNode] + child.weight
-            visitList.push(child.toNode)
-          }
+          if ( distancesSet.get(childNode.to)
+            < distancesSet.get(currentNodeNum) + childNode.weight) continue
+
+          distancesSet.set(
+            childNode.to,
+            distancesSet.get(currentNodeNum) + childNode.weight
+          )
+
+          visitList.push(childNode.to)
         }
       }
 
-      return distances
+      return distancesSet
     }
 
     const Graph = buildGraph(edges)
-    const distancesFromStaringNode = getGraphDistances(Graph, s)
-    delete distancesFromStaringNode[s]
-    distancesFromStaringNode.slice()
+    const distances = getDistancesFromGraph(Graph, s)
 
-    for (let nodeNumber = 1; nodeNumber <= n; nodeNumber++) {
-      if (nodeNumber === s) continue
-
-      if (!distancesFromStaringNode[nodeNumber])
-        distancesFromStaringNode[nodeNumber] = -1
+    const responseList = []
+    for (let i = 1; i <= n; i++) {
+      if (i === s) continue
+      if (distances.has(i))
+        responseList.push(distances.get(i))
+      else
+        responseList.push(-1)
     }
 
-    // console.log(distancesFromStaringNode.filter(Number))
-    return distancesFromStaringNode.filter(Number)
+    return responseList
   }
+
+
 
   const edges = [
     [ 1, 2, 24 ], [ 1, 4, 20 ], [ 3, 1, 3 ], [ 4, 3, 12 ]
   ];
 
-  shortestReach(4, edges, 1)
+  console.log(shortestReach(4, edges, 1))
 });
 </script>
 </body>
