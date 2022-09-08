@@ -30,8 +30,8 @@ $('document').ready(() => {
     const getDistancesFromGraph = (_Graph = new Map(), startNode) => {
       const distancesSet = new Map()
       distancesSet.set(startNode, 0)
-      const visitList = [startNode]
 
+      const visitList = [startNode]
       while (visitList.length) {
         const currentNodeNum = visitList.pop()
         for (const childNode of _Graph.get(currentNodeNum)) {

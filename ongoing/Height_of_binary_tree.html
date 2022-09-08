@@ -1,0 +1,72 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+
+<body style="background-color: black; color: white">
+
+<a href="https://www.hackerrank.com/challenges/tree-height-of-a-binary-tree/problem?isFullScreen=true">
+  <h1>Height of binary tree</h1>
+</a>
+
+<script>
+$('document').ready(() => {
+
+
+  function buildTree(_input) {
+    const insertNode = (head, node) => {
+      if (node.data < head.data) {
+        if (!head.left)
+          head.left = node
+        else
+          insertNode(head.left, node)
+      } else {
+        if (!head.right)
+          head.right = node
+        else
+          insertNode(head.right, node)
+      }
+    }
+
+    const nodeNumbers = _input.split(' ')
+    const Head = {
+      data: nodeNumbers.shift(),
+      left: null, right: null,
+    }
+
+    for (const nodeNumber of nodeNumbers) {
+      const newNode = {
+        data: nodeNumber,
+        right: null, left: null,
+      }
+      insertNode(Head, newNode)
+    }
+
+    return Head
+  }
+
+  function treeHeight(root) {
+    console.log('root', root)
+
+
+    if (!root) return -1
+
+    const leftH = treeHeight(root.left)
+    const rightH = treeHeight(root.right)
+
+    if (leftH > rightH) {
+      return leftH + 1
+    } else {
+      return rightH + 1
+    }
+  }
+
+  const input = '3 5 2 1 4 6 7';
+  const height = treeHeight(buildTree(input))
+
+  console.log('height', height)
+
+
+});
+</script>
+</body>
+</html>
