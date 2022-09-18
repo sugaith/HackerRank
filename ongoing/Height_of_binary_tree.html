@@ -60,7 +60,30 @@ $('document').ready(() => {
     }
   }
 
-  const input = '3 5 2 1 4 6 7';
+  function treeHeight2(root) {
+    console.log('root', root)
+
+    let maxHeight = 0
+
+    const runTree = (_root, level) => {
+      if (!_root) return
+
+      if (maxHeight < level) {
+        maxHeight = level
+      }
+
+      runTree(_root.left, level + 1)
+      runTree(_root.right, level + 1)
+    }
+
+    runTree(root, 0)
+
+    return maxHeight
+  }
+
+  // const input = '3 5 2 1 4 6 7';
+  const input = '10 54 1 5 9 100 110 112 113 1000';
+  // const input = '3 1 7 5 4';
   const height = treeHeight(buildTree(input))
 
   console.log('height', height)
